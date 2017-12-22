@@ -1,0 +1,21 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    {% if error %}
+        <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    <form action="{{ path('login') }}" method="post">
+        <label for="username">Felhasználónév:</label>
+        <input type="text" id="username" name="_username" value="{{ last_username }}" />
+
+        <label for="password">Jelszó:</label>
+        <input type="password" id="password" name="_password" />
+        {% if captchaSrc is not null %}
+            <img src="{{ captchaSrc }}">
+            <input id="captchaphrase" name="_captchaphrase" />
+        {% endif %}
+
+        <button type="submit">Belépés</button>
+    </form>
+{% endblock %}

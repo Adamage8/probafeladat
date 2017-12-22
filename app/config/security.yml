@@ -1,0 +1,56 @@
+# To get started with security, check out the documentation:
+# https://symfony.com/doc/current/security.html
+security:
+    encoders:
+        AppBundle\Entity\User:
+            algorithm: bcrypt
+
+    providers:
+        db_provider:
+            entity:
+                class: AppBundle:User
+                property: username
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            anonymous: ~
+            pattern:    ^/
+            switch_user: true
+            provider: db_provider
+
+            form_login:
+                login_path: login
+                check_path: login
+                success_handler: AppBundle\Service\LoginSuccessHandler
+                failure_handler: AppBundle\Service\AuthenticationFailureHandler
+                #default_target_path: private
+            logout:
+                path:   /logout
+                target: /
+
+            access_denied_handler: AppBundle\Security\AccessDeniedHandler
+
+        default:
+            anonymous: ~
+
+
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_ADMIN, ROLE_CONTENT_EDITOR, ROLE_PLAIN_USER]
+        ROLE_CONTENT_EDITOR: ROLE_CONTENT_EDITOR
+        ROLE_PLAIN_USER: ROLE_PLAIN_USER
+
+    access_control:
+        - { path: ^/plainUser/*, roles: ROLE_PLAIN_USER }
+        - { path: ^/contentEditor/*, roles: ROLE_CONTENT_EDITOR }
+
+            # activate different ways to authenticate
+
+            # http_basic: ~
+            # http://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
+
+            # form_login: ~
+            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html

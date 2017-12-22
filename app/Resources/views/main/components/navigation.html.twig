@@ -1,0 +1,12 @@
+<ul>
+    {% if is_granted('ROLE_ADMIN') %}
+        <li><a href="{{ path('adminIndex') }}">Adminisztrátor oldal</a></li>
+    {% endif %}
+    {% if is_granted('ROLE_CONTENT_EDITOR') %}
+        <li><a href="{{ path('contentEditorIndex') }}">Tartalomszerkesztő oldal</a></li>
+    {% endif %}
+    {% if is_granted('ROLE_PLAIN_USER') %}
+        <li><a href="{{ path('plainUserIndex') }}">Felhasználói oldal</a></li>
+    {% endif %}
+    <li><a href="{{ path('logout') }}">Kilépés</a></li>
+</ul>
